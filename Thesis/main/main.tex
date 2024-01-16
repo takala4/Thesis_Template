@@ -1,0 +1,99 @@
+\documentclass[a4j,11pt,uplatex,oneside,openany,dvipdfmx]{jsbook}
+\usepackage{graphicx}
+% https://qiita.com/KAI_Mutsumi/items/872983c756c0c12dbeed
+% \addtolength{\fullwidth}{-16truemm} %全体の幅(ヘッダ部の幅)を既定値から26mm小さくする
+% \setlength{\textwidth}{\fullwidth}  %本文の幅(textwidth)を全体の幅(=ヘッダ部の幅)にそろえる
+% https://mathlandscape.com/latex-margin/
+\usepackage[top=25truemm,bottom=25truemm,left=25truemm,right=25truemm]{geometry}
+\renewcommand{\baselinestretch}{1.2} %本文全体の行間をX倍にする
+
+\usepackage{../cls/mystyle}
+
+\makeatletter
+\newcommand{\isJapanese}[1]{%
+  % 先頭が日本語か英語か判断する関数（未使用）
+  % https://blog.wtsnjp.com/2017/03/31/tex-by-topic2/
+  \protected@edef\mystring{#1}%
+  % \mystring\relax%
+  \StrLeft{\mystring}{1}[\myfirstchar]%
+  \myfirstchar%
+  \ifnum\kcatcode\expandafter`\myfirstchar=15 % 15は和文以外
+    The string is not Japanese.%
+  \else
+    The string is Japanese.%
+  \fi  
+}
+% 参考文献の日本語論文誌名が太字になるのを無理やり修正．
+\renewcommand{\emph}[1]{\textit{#1}}
+\makeatother
+
+\usepackage[
+    backend=bibtex,
+    style=authoryear,
+    maxbibnames=99,
+    maxcitenames=2,
+    % giveninits=true, % first nameをイニシャルにする
+    dashed=false,
+    natbib=true,
+    url=false,
+    doi=false]{biblatex}
+\addbibresource{../cls/refs.bib} %ここにbibファイルの名前を書く
+\DeclareNameAlias{author}{last-first} % co-authorも姓名の順番にする
+\DeclareFieldFormat*{issn}{{}} %issnを表示しない
+\DeclareFieldFormat*{isbn}{{}} %isbnを表示しない
+\DeclareFieldFormat*{title}{{#1}} % タイトルからダブルクオーテーションをはずす
+\renewbibmacro{in:}{} % in: Some journal の "in:" を取る
+\AtEveryBibitem{\clearfield{month}}
+\AtEveryCitekey{\clearfield{month}}
+
+
+% http://otoguro.net/home/latex/bibtex/
+% \bibpunct[]{(}{)}{,}{a}{}{,}
+\renewcommand{\bibname}{参考文献}
+\renewcommand{\refname}{参考文献}
+
+\newcounter{masterflag}
+\newcommand{\bibdummy}[1]{
+  \ifthenelse{\value{masterflag} = 1}{
+    \relax
+  }{
+    \ifthenelse{#1 = 1}{
+      \renewcommand{\bibname}{参考文献}
+      \renewcommand{\refname}{参考文献}
+      \printbibliography
+    }{
+      \relax
+    }
+  }
+}
+
+\pgfplotsset{compat=1.16}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\setcounter{masterflag}{1}
+
+% タイトルページ
+\subfile{../title/title}
+
+% 要旨
+\addcontentsline{toc}{chapter}{論文要旨}
+\subfile{../abstract/abstract}
+% 
+\newpage
+% 目次
+\addcontentsline{toc}{chapter}{目次}
+\tableofcontents
+
+\subfile{../chap1/chap1}
+\subfile{../chap2/chap2}
+\subfile{../chap3/chap3}
+
+\newpage
+\addcontentsline{toc}{chapter}{参考文献}
+\renewcommand{\bibname}{参考文献}
+\printbibliography
+\newpage
+% 謝辞
+\addcontentsline{toc}{chapter}{謝辞}
+\subfile{../thank/thank}
+\end{document}
