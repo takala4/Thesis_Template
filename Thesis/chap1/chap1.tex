@@ -81,11 +81,60 @@ bibファイルの各文献は，Google Scholarで引用した文献をBibTeX形
 \par
 これをコピーして，refs.bibに貼り付ける．
 
+\subsection{日本語文献}\label{subsec:japanese_bib}
+日本語文献を扱う場合のbibデータの注意点は以下である：
+\begin{itemize}
+  \item keyは必ず半角英数字にする．
+  \item langidという新しいフィールドを追加しjapaneseと設定する．
+  \item 姓名の区切りは半角カンマとする．
+\end{itemize}
+つまり，次のように記述すれば良い．
+\begin{framed}
+  \begin{lstlisting}[language={[latex]TeX}]
+    @article{TAKAYAMA2014DEVELOPMENT,
+    title= {新経済地理学に基づく空間応用一般均衡モデルの開発},
+    author= {高山,雄貴 and 赤松,隆 and 石倉,智樹},
+    journal= {土木学会論文集 D3 (土木計画学)},
+    volume={70},
+    number={4},
+    pages={245--258},
+    year={2014},
+    publisher={公益社団法人 土木学会},
+    langid={japanese}
+  }
+  \end{lstlisting}
+\end{framed}
+このようにしない場合，日本語文献が適切に処理されない．
+
+
+
 \subsection{本文内での引用}
 本文内での引用は\verb|\cite{キー}|を用いて行う．
 例えば，\verb|\citet{Vickrey1969-ic}|と記述すると，\citet{Vickrey1969-ic}となる．
 その他，\verb|\citep|，\verb|\citeauthor|，\verb|\citeyear|などがある．
 詳しくは，\url{https://www.overleaf.com/learn/latex/Natbib\_citation\_styles}を参照のこと．
+\par
+\begin{itemize}
+  \item 英語文献：
+  \begin{itemize}
+    \item \verb|\citet{キー}|：著者名を引用する．例：\citet{Vickrey1969-ic}
+    \item \verb|\citep{キー}|：括弧付きで引用する．例：\citep{Vickrey1969-ic}
+    \item \verb|\citeauthor{キー}|：著者名のみを引用する．例：\citeauthor{Vickrey1969-ic}
+    \item \verb|\citeyear{キー}|：年のみを引用する．例：\citeyear{Vickrey1969-ic}
+    \item \verb|\cite{キー}|：著者名と年を引用する．例：\cite{Vickrey1969-ic}
+  \end{itemize}
+  \item 日本語文献：
+  \begin{itemize}
+    \item \verb|\citet{キー}|：著者名を引用する．例：\citet{TAKAYAMA2014DEVELOPMENT}
+    \item \verb|\citep{キー}|：括弧付きで引用する．例：\citep{TAKAYAMA2014DEVELOPMENT}
+    \item \verb|\citeauthor{キー}|：著者名のみを引用する．例：\citeauthor{TAKAYAMA2014DEVELOPMENT}
+    \item \verb|\citeyear{キー}|：年のみを引用する．例：\citeyear{TAKAYAMA2014DEVELOPMENT}
+    \item \verb|\cite{キー}|：著者名と年を引用する．例：\cite{TAKAYAMA2014DEVELOPMENT}
+  \end{itemize}
+\end{itemize}
+
+
+
 
 \subsection{文献管理ツール}
 Google Scholarで一つずつ文献を引用するのは面倒である．
@@ -240,8 +289,16 @@ Google Scholarで一つずつ文献を引用するのは面倒である．
 \subsection*{Q1. 参考文献を出力したいが，subfileごとに出力されてしまう}
 main.texの\verb|\bibdummy{1}|を\verb|\bibdummy{0}|に変更する．
 
-\subsection*{Q2. 章番号がずれている}
+\subsection*{Q2. 日本語文献の引用がうまくいかない}
+\ref{subsec:japanese_bib}節のように記述すること．
+
+\subsection*{Q3. 章番号がずれている}
 サブファイルの冒頭の\verb|\setcounter{chapter}{n}|を，章番号-1の値に変更する．
+
+
+\section{テンプレート作成の参考サイト}
+本テンプレートを作成するにあたり，様々なサイトを参考にした．
+基本的にはTeXソースのコメントに，参考サイトのURLを記載している．
 
 
 \bibdummy{1}% {1}にするとsubfileごとのコンパイルでも参考文献を出力する．{0}にすると出力しない．

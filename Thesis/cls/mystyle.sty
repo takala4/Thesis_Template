@@ -5,6 +5,7 @@
 \usepackage{mathptmx}
 \usepackage{framed}
 \usepackage{listings}
+\usepackage{../cls/jlisting}
 \usepackage{xstring}
 \usepackage[dvipdfmx]{color}
 \usepackage{xcolor}
@@ -234,3 +235,133 @@
 \newcommand{\VtOmega}{\bm{\Omega}}
 \newcommand{\VtvarOmega}{\bm{\varOmega}}
 %==========================
+
+
+%bibtexまわり==========================
+\makeatletter
+\newcommand{\isJapanese}[1]{%
+  % 先頭が日本語か英語か判断する関数（未使用）
+  % https://blog.wtsnjp.com/2017/03/31/tex-by-topic2/
+  \protected@edef\mystring{#1}%
+  % \mystring\relax%
+  \StrLeft{\mystring}{1}[\myfirstchar]%
+  \myfirstchar%
+  \ifnum\kcatcode\expandafter`\myfirstchar=15 % 15は和文以外
+    The string is not Japanese.%
+  \else
+    The string is Japanese.%
+  \fi
+}
+% 参考文献の日本語論文誌名が太字になるのを無理やり修正．
+\renewcommand{\emph}[1]{\textit{#1}}
+\makeatother
+
+\usepackage[
+  backend=bibtex,
+  style=authoryear,
+  maxbibnames=99,
+  maxcitenames=2,
+  % giveninits=true, % first nameをイニシャルにする
+  dashed=false,
+  natbib=true,
+  url=false,
+  doi=false]{biblatex}
+\addbibresource{../cls/refs.bib} %ここにbibファイルの名前を書く
+\DeclareNameAlias{author}{last-first} % co-authorも姓名の順番にする
+\DeclareFieldFormat*{issn}{{}} %issnを表示しない
+\DeclareFieldFormat*{isbn}{{}} %isbnを表示しない
+\DeclareFieldFormat*{title}{{#1}} % タイトルからダブルクオーテーションをはずす
+\renewbibmacro{in:}{} % in: Some journal の "in:" を取る
+\AtEveryBibitem{\clearfield{month}}
+\AtEveryCitekey{\clearfield{month}}
+
+
+% ------------------------------------------------
+% 日本語の参考文献を設定
+% https://obsica.com/biblatex-japanese-config/を参考
+% \ExecuteBibliographyOptions{
+%   date = year,  % 日付は年のみを表示
+%   maxbibnames=20,  % 参考文献リストで表示する著者の最大数
+%   maxcitenames=2,  % 引用時の著者の最大数
+%   maxnames=3,  % 表示する著者の最大数。超えるとminnamesだけ表示して後は省略する
+%   minnames=1,  % 表示する著者の最小数
+% }
+
+%% 著者名のフォーマットを宣言
+%% biblatex.defのfamily-givenとlabelnameを日本語用に
+\DeclareNameFormat{japanese}{%参考文献リストでのフォーマット
+  \usebibmacro{name:family-given}
+  {\namepartfamily}
+  {\namepartgiven}
+  {\namepartprefix}
+  {\namepartsuffix}%
+  \usebibmacro{name:andothers}}
+
+\DeclareNameFormat{labelname-japanese}{% 文中でのフォーマット
+  \ifcase\value{uniquename}%
+    \usebibmacro{name:family}
+    {\namepartfamily}
+    {\namepartgiven}
+    {\namepartprefix}
+    {\namepartsuffix}%
+  \or
+    \usebibmacro{name:family-given}
+    {\namepartfamily}
+    {\namepartgiven}
+    {\namepartprefix}
+    {\namepartsuffix}%
+  \fi
+  ら}
+
+%% 参考文献リストでの表記を設定
+\AtEveryBibitem{%
+  \iffieldequalstr{langid}{japanese}
+  {\DeclareNameAlias{default}{japanese}%
+    \DeclareNameAlias{sortname}{japanese}%
+    \renewcommand*{\revsdnamepunct}{}% 姓と名の間のコンマを消去
+    \DeclareDelimFormat{multinamedelim}{・}% 著者名の区切り文字
+    \DeclareDelimFormat{finalnamedelim}{・}% 著者名の最後の区切り文字
+    \renewbibmacro*{bytranslator}{% 翻訳者の表記
+      \ifnameundef{translator}
+      {}
+      {\printnames[bytranslator]{translator}\printtext[parens]{訳}}}%
+    \renewbibmacro*{bytranslator+others}{\usebibmacro{bytranslator}}%
+    % タイトルの書式
+    \DeclareFieldFormat*{title}{#1}% タイトル
+    \DeclareFieldFormat[book]{title}{#1}% 本タイトルを
+    \DeclareFieldAlias{booktitle}[book]{title}% 文献を収録する本のタイトルを『』で囲む
+    \DeclareFieldAlias{journaltitle}[book]{title}% 雑誌名を『』で囲む
+    \renewbibmacro{in:}{}% In:を削除
+  }{}%
+}
+
+%% 文中の引用での表記を設定
+\AtEveryCitekey{%
+  \iffieldequalstr{langid}{japanese}
+  {\DeclareNameAlias{labelname}{labelname-japanese}%
+    \DeclareDelimFormat{multinamedelim}{・}%
+    \DeclareDelimFormat{finalnamedelim}{・}%
+    \renewcommand*{\revsdnamepunct}{}%
+  }{}%
+}
+% ------------------------------------------------
+
+% http://otoguro.net/home/latex/bibtex/
+% \bibpunct[]{(}{)}{,}{a}{}{,}
+\renewcommand{\bibname}{参考文献}
+\renewcommand{\refname}{参考文献}
+
+\newcounter{masterflag}
+\newcommand{\bibdummy}[1]{
+  \ifthenelse{\value{masterflag} = 1}{
+    \relax
+  }{
+    \ifthenelse{#1 = 1}{
+      \renewcommand{\bibname}{参考文献}
+      \renewcommand{\refname}{参考文献}
+      \printbibliography
+    }{
+      \relax
+    }
+  }
+}

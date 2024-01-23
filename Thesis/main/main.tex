@@ -9,63 +9,7 @@
 
 \usepackage{../cls/mystyle}
 
-\makeatletter
-\newcommand{\isJapanese}[1]{%
-  % 先頭が日本語か英語か判断する関数（未使用）
-  % https://blog.wtsnjp.com/2017/03/31/tex-by-topic2/
-  \protected@edef\mystring{#1}%
-  % \mystring\relax%
-  \StrLeft{\mystring}{1}[\myfirstchar]%
-  \myfirstchar%
-  \ifnum\kcatcode\expandafter`\myfirstchar=15 % 15は和文以外
-    The string is not Japanese.%
-  \else
-    The string is Japanese.%
-  \fi  
-}
-% 参考文献の日本語論文誌名が太字になるのを無理やり修正．
-\renewcommand{\emph}[1]{\textit{#1}}
-\makeatother
 
-\usepackage[
-    backend=bibtex,
-    style=authoryear,
-    maxbibnames=99,
-    maxcitenames=2,
-    % giveninits=true, % first nameをイニシャルにする
-    dashed=false,
-    natbib=true,
-    url=false,
-    doi=false]{biblatex}
-\addbibresource{../cls/refs.bib} %ここにbibファイルの名前を書く
-\DeclareNameAlias{author}{last-first} % co-authorも姓名の順番にする
-\DeclareFieldFormat*{issn}{{}} %issnを表示しない
-\DeclareFieldFormat*{isbn}{{}} %isbnを表示しない
-\DeclareFieldFormat*{title}{{#1}} % タイトルからダブルクオーテーションをはずす
-\renewbibmacro{in:}{} % in: Some journal の "in:" を取る
-\AtEveryBibitem{\clearfield{month}}
-\AtEveryCitekey{\clearfield{month}}
-
-
-% http://otoguro.net/home/latex/bibtex/
-% \bibpunct[]{(}{)}{,}{a}{}{,}
-\renewcommand{\bibname}{参考文献}
-\renewcommand{\refname}{参考文献}
-
-\newcounter{masterflag}
-\newcommand{\bibdummy}[1]{
-  \ifthenelse{\value{masterflag} = 1}{
-    \relax
-  }{
-    \ifthenelse{#1 = 1}{
-      \renewcommand{\bibname}{参考文献}
-      \renewcommand{\refname}{参考文献}
-      \printbibliography
-    }{
-      \relax
-    }
-  }
-}
 
 \pgfplotsset{compat=1.16}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
