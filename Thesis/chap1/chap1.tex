@@ -106,16 +106,11 @@ bibファイルの各文献は，Google Scholarで引用した文献をBibTeX形
 \end{framed}
 このようにしない場合，日本語文献が適切に処理されない．
 
-
-
 \subsection{本文内での引用}
 本文内での引用は\verb|\cite{キー}|を用いて行う．
 例えば，\verb|\citet{Vickrey1969-ic}|と記述すると，\citet{Vickrey1969-ic}となる．
 その他，\verb|\citep|，\verb|\citeauthor|，\verb|\citeyear|などがある．
 詳しくは，\url{https://www.overleaf.com/learn/latex/Natbib\_citation\_styles}を参照のこと．
-\par
-\begin{itemize}
-  \item 英語文献：
   \begin{itemize}
     \item \verb|\citet{キー}|：著者名を引用する．例：\citet{Vickrey1969-ic}
     \item \verb|\citep{キー}|：括弧付きで引用する．例：\citep{Vickrey1969-ic}
@@ -123,17 +118,13 @@ bibファイルの各文献は，Google Scholarで引用した文献をBibTeX形
     \item \verb|\citeyear{キー}|：年のみを引用する．例：\citeyear{Vickrey1969-ic}
     \item \verb|\cite{キー}|：著者名と年を引用する．例：\cite{Vickrey1969-ic}
   \end{itemize}
-  \item 日本語文献：
-  \begin{itemize}
-    \item \verb|\citet{キー}|：著者名を引用する．例：\citet{TAKAYAMA2014DEVELOPMENT}
-    \item \verb|\citep{キー}|：括弧付きで引用する．例：\citep{TAKAYAMA2014DEVELOPMENT}
-    \item \verb|\citeauthor{キー}|：著者名のみを引用する．例：\citeauthor{TAKAYAMA2014DEVELOPMENT}
-    \item \verb|\citeyear{キー}|：年のみを引用する．例：\citeyear{TAKAYAMA2014DEVELOPMENT}
-    \item \verb|\cite{キー}|：著者名と年を引用する．例：\cite{TAKAYAMA2014DEVELOPMENT}
-  \end{itemize}
+ なお，3人以上の著者の場合，英語文献の場合，firstauthor et al.となる．日本語文献の場合，firstauthorらとなる．
+\begin{itemize}
+  \item 著者2人（英語）：\citet{arnott2011corridor}
+  \item 著者3人以上（英語）：\citet{arnott1990economics}
+  \item 著者2人（日本語）：\citet{TAKAYAMA2011SPATIAL}
+  \item 著者3人以上（日本語）：\citet{TAKAYAMA2014DEVELOPMENT}
 \end{itemize}
-
-
 
 
 \subsection{文献管理ツール}

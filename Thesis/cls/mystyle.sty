@@ -288,14 +288,6 @@
 
 %% 著者名のフォーマットを宣言
 %% biblatex.defのfamily-givenとlabelnameを日本語用に
-\DeclareNameFormat{japanese}{%参考文献リストでのフォーマット
-  \usebibmacro{name:family-given}
-  {\namepartfamily}
-  {\namepartgiven}
-  {\namepartprefix}
-  {\namepartsuffix}%
-  \usebibmacro{name:andothers}}
-
 \DeclareNameFormat{labelname-japanese}{% 文中でのフォーマット
   \ifcase\value{uniquename}%
     \usebibmacro{name:family}
@@ -309,8 +301,36 @@
     {\namepartgiven}
     {\namepartprefix}
     {\namepartsuffix}%
-  \fi
-  ら}
+    \fi
+    \ifboolexpr{
+    test {\ifnumgreater{\value{listtotal}}{\value{liststop}}}
+    and
+    test \ifmorenames
+  }
+  {\ifnumgreater{\value{liststop}}{1}
+    {\finalandcomma}
+    {}%
+    {ら}}
+  {}  
+  }
+
+  %% 文中の引用での表記を設定
+\AtEveryCitekey{%
+  \iffieldequalstr{langid}{japanese}
+  {\DeclareNameAlias{labelname}{labelname-japanese}%
+    \DeclareDelimFormat{multinamedelim}{・}%
+    \DeclareDelimFormat{finalnamedelim}{・}%
+    \renewcommand*{\revsdnamepunct}{}%
+  }{}%
+}
+
+\DeclareNameFormat{japanese}{%参考文献リストでのフォーマット
+  \usebibmacro{name:family-given}
+  {\namepartfamily}
+  {\namepartgiven}
+  {\namepartprefix}
+  {\namepartsuffix}%
+  \usebibmacro{name:andothers}}
 
 %% 参考文献リストでの表記を設定
 \AtEveryBibitem{%
@@ -334,15 +354,6 @@
   }{}%
 }
 
-%% 文中の引用での表記を設定
-\AtEveryCitekey{%
-  \iffieldequalstr{langid}{japanese}
-  {\DeclareNameAlias{labelname}{labelname-japanese}%
-    \DeclareDelimFormat{multinamedelim}{・}%
-    \DeclareDelimFormat{finalnamedelim}{・}%
-    \renewcommand*{\revsdnamepunct}{}%
-  }{}%
-}
 % ------------------------------------------------
 
 % http://otoguro.net/home/latex/bibtex/
