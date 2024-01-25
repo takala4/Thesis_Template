@@ -41,6 +41,9 @@
   .2 chap3/.
   .3 chap3.pdf.
   .3 chap3.tex [第3章].
+  .2 appendix/.
+  .3 appendix.pdf.
+  .3 appendix.tex [付録].
   .2 thank/.
   .3 thank.pdf.
   .3 thank.tex [謝辞].
@@ -260,14 +263,34 @@ Google Scholarで一つずつ文献を引用するのは面倒である．
 \end{algorithm}
 
 \section{付録の挿入}
+2種類の方法がある．
+\subsection{各chapterごとに付録を挿入する場合}
 付録は，subappendices環境を用いて挿入する．
 \begin{lstlisting}[language={[latex]TeX}]
   \begin{subappendices}
-    \section\{証明\}
+    \section{証明}
     ここは章ごとの付録．
   \end{subappendices}
 \end{lstlisting}
 
+\subsection{論文の最後に付録を挿入する場合}
+付録は，appendix環境を用いて挿入する．
+各chapterと同じように，subfileを作成する．
+ただし，次のようにchapterの前に\verb|\appendix|を挿入する．
+\begin{lstlisting}[language={[latex]TeX}]
+  
+  \begin{document}
+  \appendix
+  \chapter{定理Iの証明}
+    ここは付録．
+
+  \chapter{定理IIの証明}
+    ここは付録．
+
+  \bibdummy{1}
+  \end{document}
+
+\end{lstlisting}
 
 \newpage
 \section{FAQ}
