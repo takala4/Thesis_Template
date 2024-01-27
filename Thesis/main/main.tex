@@ -7,34 +7,46 @@
 \usepackage[top=25truemm,bottom=25truemm,left=25truemm,right=25truemm]{geometry}
 \renewcommand{\baselinestretch}{1.2} %本文全体の行間をX倍にする
 
-\usepackage{../cls/mystyle}
 
+% template %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{../input/takalastyle}
+\usepackage{../input/jlisting}
+
+% bib file %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addbibresource{refs.bib} %bibファイル (for overleaf)
+% \addbibresource{../input/refs.bib} %bibファイル (for local compile)
+
+
+% your setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 追加のパッケージやカスタマイズ内容はここに書く．
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \pgfplotsset{compat=1.16}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 \setcounter{masterflag}{1}
 
 % タイトルページ
-\subfile{../title/title}
+\subfile{../000_cover/000_cover}
 
 % 要旨
 \addcontentsline{toc}{chapter}{論文要旨}
-\subfile{../abstract/abstract}
+\subfile{../001_abstract/001_abstract}
 % 
 \newpage
 % 目次
 \addcontentsline{toc}{chapter}{目次}
 \tableofcontents
-
-\subfile{../chap1/chap1}
-\subfile{../chap2/chap2}
-\subfile{../chap3/chap3}
-
-\appendix
-\subfile{../appendix/appendix}
-
+%
+\subfile{../01_chap/01_chap}
+\subfile{../02_chap/02_chap}
+\subfile{../03_chap/03_chap}
+%
+\subfile{../98_appendix/98_appendix}
+%
 \newpage
 \addcontentsline{toc}{chapter}{参考文献}
 \renewcommand{\bibname}{参考文献}
@@ -42,5 +54,5 @@
 \newpage
 % 謝辞
 \addcontentsline{toc}{chapter}{謝辞}
-\subfile{../thank/thank}
+\subfile{../99_thank/99_thank}
 \end{document}

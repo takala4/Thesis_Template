@@ -16,39 +16,53 @@
 \par
 新しいサブファイルを追加する場合は，main.texに\verb|\subfile{ファイル名}|を追加する．
 
+
+\section{overleafでの使用方法}\label{sec:1_overleaf}
+overleafで使用することもできる．
+設定は次の通り：
+\begin{itemize}
+  \item Compiler: \verb|LaTeX|
+  \item Main document: \verb|Thesis/main/main.tex|
+  \item その他：基本的にデフォルトで可
+\end{itemize}
+その他，\verb|latexmkrc|ファイル（拡張子はなし）を用意する．
+以下を記載し，最上位階層に配置する．
+\begin{lstlisting}
+    $latex = 'uplatex';
+    $bibtex = 'bibtex';
+    $dvipdf = 'dvipdfmx %O -o %D %S';
+    $makeindex = 'mendex -U %O -o %D %S';
+    $pdf_mode = 3;
+    $ENV{'BIBINPUTS'}='..//input//:' . $ENV{'BIBINPUTS'};
+\end{lstlisting}
+
+
 \newpage
 \section{ファイル構成}
+ディレクトリ構成は次の通り．頭に数字がついているのは，ファイルエクスプローラー上で，ディレクトリが綺麗に並ぶようにするためである．ややこしい場合は適宜改変してよい．ただし，\verb|main/main.tex|に相当するディレクトリとファイルに関しては，アンダーライン\verb|_|を使うことができない．
 \begin{framed}
   \dirtree{%
   .1 Thesis/.
-  .2 main/.
-  .3 main.pdf.
-  .3 main.tex [全体].
-  .2 abstract/.
-  .3 abstract.pdf.
-  .3 abstract.tex [要旨].
-  .2 title/.
-  .3 title.pdf.
-  .3 title.tex [表紙].
-  .2 chap1/.
-  .3 chap1.pdf.
-  .3 chap1.tex [第1章].
+  .2 000\_cover/.
+  .3 000\_cover.tex [表紙].
+  .2 001\_abstract/.
+  .3 001\_abstract.tex [要旨].
+  .2 01\_chap/.
+  .3 01\_chap.tex [第1章].
   .3 image/.
   .4 sample.pdf.
-  .2 chap2/.
-  .3 chap2.pdf.
-  .3 chap2.tex [第2章].
-  .2 chap3/.
-  .3 chap3.pdf.
-  .3 chap3.tex [第3章].
-  .2 appendix/.
-  .3 appendix.pdf.
-  .3 appendix.tex [付録].
-  .2 thank/.
-  .3 thank.pdf.
-  .3 thank.tex [謝辞].
-  .2 cls/.
-  .3 mystyle.sty.
+  .2 02\_chap/.
+  .3 02\_chap.tex [第2章].
+  .2 03\_chap/.
+  .3 03\_chap.tex [第3章].
+  .2 98\_appendix/.
+  .3 98\_appendix.tex [付録].
+  .2 99\_thank/.
+  .3 99\_thank.tex [謝辞].
+  .2 main/.
+  .3 main.tex [全体].
+  .2 input/.
+  .3 takalastyle.sty.
   .3 refs.bib.
   }
 \end{framed}
@@ -92,7 +106,6 @@ bibファイルの各文献は，Google Scholarで引用した文献をBibTeX形
   \item 姓名の区切りは半角カンマとする．
 \end{itemize}
 つまり，次のように記述すれば良い．
-\begin{framed}
   \begin{lstlisting}[language={[latex]TeX}]
     @article{TAKAYAMA2014DEVELOPMENT,
     title= {新経済地理学に基づく空間応用一般均衡モデルの開発},
@@ -106,7 +119,6 @@ bibファイルの各文献は，Google Scholarで引用した文献をBibTeX形
     langid={japanese}
   }
   \end{lstlisting}
-\end{framed}
 このようにしない場合，日本語文献が適切に処理されない．
 
 \subsection{本文内での引用}
@@ -157,6 +169,7 @@ Google Scholarで一つずつ文献を引用するのは面倒である．
     \label{fig:CorridorNetwork}
   \end{figure}
 \end{lstlisting}
+
 \begin{figure}[!ht]
   \center
 \includegraphics[clip, width=0.5\columnwidth]{image/sample.pdf}
@@ -167,11 +180,6 @@ Google Scholarで一つずつ文献を引用するのは面倒である．
 \newpage
 \section{表の挿入}
 表は作成は次のように記述する．
-\lstset{
-    frame=single,
-    numbers=left,
-    tabsize=2
-}
 \begin{lstlisting}[language={[latex]TeX}]
   \begin{table}[ht]
     \centering % 表を中央揃えにする
@@ -292,28 +300,12 @@ Google Scholarで一つずつ文献を引用するのは面倒である．
 
 \end{lstlisting}
 
-\newpage
-\section{FAQ}
-\subsection*{まずは．．．}
-  \begin{itemize}
-    \item コンパイルエラーの多くは，エラーメッセージをそのままググることで，解決策が見つかることが多い．まずは，エラーメッセージをググること．chatgptに聞くのも良い．
-    \item 一時ファイルを削除してからコンパイルすると，エラーが解消されることがある．
-  \end{itemize}
-
-\subsection*{Q1. 参考文献を出力したいが，subfileごとに出力されてしまう}
-main.texの\verb|\bibdummy{1}|を\verb|\bibdummy{0}|に変更する．
-
-\subsection*{Q2. 日本語文献の引用がうまくいかない}
-\ref{subsec:japanese_bib}節のように記述すること．
-
-\subsection*{Q3. 章番号がずれている}
-サブファイルの冒頭の\verb|\setcounter{chapter}{n}|を，章番号-1の値に変更する．
 
 
-\section{テンプレート作成の参考サイト}
-本テンプレートを作成するにあたり，様々なサイトを参考にした．
-基本的にはTeXソースのコメントに，参考サイトのURLを記載している．
-
+\begin{subappendices}
+  \section{証明}
+  ここは章ごとの付録．
+\end{subappendices}
 
 \bibdummy{1}% {1}にするとsubfileごとのコンパイルでも参考文献を出力する．{0}にすると出力しない．
 \end{document}

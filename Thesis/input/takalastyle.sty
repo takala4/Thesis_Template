@@ -5,7 +5,11 @@
 \usepackage{mathptmx}
 \usepackage{framed}
 \usepackage{listings}
-\usepackage{../cls/jlisting}
+\lstset{
+    frame=single,
+    numbers=left,
+    tabsize=2
+}
 \usepackage{xstring}
 \usepackage[dvipdfmx]{color}
 \usepackage{xcolor}
@@ -266,7 +270,6 @@
   natbib=true,
   url=false,
   doi=false]{biblatex}
-\addbibresource{../cls/refs.bib} %ここにbibファイルの名前を書く
 \DeclareNameAlias{author}{last-first} % co-authorも姓名の順番にする
 \DeclareFieldFormat*{issn}{{}} %issnを表示しない
 \DeclareFieldFormat*{isbn}{{}} %isbnを表示しない
@@ -376,3 +379,4 @@
     }
   }
 }
+
