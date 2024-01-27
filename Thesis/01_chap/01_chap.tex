@@ -9,22 +9,23 @@
 \url{https://github.com/takala4/Thesis_Template}
 にある．
 \par
-各ファイルを個別にコンパイルすることもできるが，main.texをコンパイルすることで，全てのファイルをコンパイルすることもできる．
+各ファイルを個別にコンパイルすることもできるが，\verb|main/main.tex|をコンパイルすることで，全てのファイルをコンパイルすることもできる．
 \par
-パッケージの追加やオリジナルコマンドの定義は，cls/mystyle.styに記述する．
-ここに記述することで，各ファイルに一括で適用される．
+パッケージの追加やオリジナルコマンドの定義は，\verb|main/main.tex|に記述する．ここに記述することで，各ファイルに一括で適用される．
 \par
 新しいサブファイルを追加する場合は，main.texに\verb|\subfile{ファイル名}|を追加する．
 
 
+\newpage
 \section{overleafでの使用方法}\label{sec:1_overleaf}
-overleafで使用することもできる．
-設定は次の通り：
+overleafで使用することもできる．設定のポイントは次の3点．
+\paragraph{ポイント1：基本設定}
 \begin{itemize}
   \item Compiler: \verb|LaTeX|
   \item Main document: \verb|Thesis/main/main.tex|
   \item その他：基本的にデフォルトで可
 \end{itemize}
+\paragraph{ポイント2：latexmkrcの設置}
 その他，\verb|latexmkrc|ファイル（拡張子はなし）を用意する．
 以下を記載し，最上位階層に配置する．
 \begin{lstlisting}
@@ -35,6 +36,14 @@ overleafで使用することもできる．
     $pdf_mode = 3;
     $ENV{'BIBINPUTS'}='..//input//:' . $ENV{'BIBINPUTS'};
 \end{lstlisting}
+\paragraph{ポイント3：bibファイルの参照設定}
+\verb|main.tex|の\verb|\addbibresource{../input/refs.bib}|を\verb|\addbibresource{refs.bib}|に変更する．
+ただし，bibファイルの配置場所は，\verb|../input/refs.bib|のままである．
+\begin{lstlisting}[language={[latex]TeX}]
+  \addbibresource{refs.bib} %bibファイル (for overleaf)
+  % \addbibresource{../input/refs.bib} %bibファイル (for local compile)
+\end{lstlisting}
+
 
 
 \newpage
@@ -72,7 +81,7 @@ overleafで使用することもできる．
 \section{参考文献}
 参考文献の管理はbibを用いて行う．
 \subsection{bibファイル}
-bibファイルはcls/refs.bibに保存する．
+bibファイルは\verb|input/refs.bib|に保存する．
 \par
 bibファイルの各文献は，Google Scholarで引用した文献をBibTeX形式で出力することで簡単に作成できる．
 まず，Google Scholarで引用したい文献を検索し，「引用」を選択する．
@@ -215,6 +224,7 @@ Google Scholarで一つずつ文献を引用するのは面倒である．
 \newpage
 \section{数式}
 数式は，align環境を用いて記述すると良い．
+\begin{lstlisting}[language={[latex]TeX}]
 \begin{align}
   &y = a x^{2} + bx + c
   \\
@@ -231,8 +241,50 @@ Google Scholarで一つずつ文献を引用するのは面倒である．
     F(x) \geq 0 &\text{if} \quad x=0
   \end{dcases}
 \end{align}
+\end{lstlisting}
+\begin{align}
+  &y = a x^{2} + bx + c
+  \\
+  &\VtA = 
+  \begin{bmatrix}
+    1 & 2 & 3 \\
+    4 & 5 & 6 \\
+    7 & 8 & 9
+  \end{bmatrix}
+  \\
+  &\begin{dcases}
+    F(x) = 0 &\text{if}   \quad x>0
+    \\
+    F(x) \geq 0 &\text{if} \quad x=0
+  \end{dcases}
+\end{align}
+
+\newpage
 \section{定理環境}
 定義，仮定，定理，命題，補題，系などは，\verb|amsthm|パッケージを用いて記述する．
+\begin{itemize}
+  \item 定義：\verb|\begin{dfn}\text{～}\end{dfn}|
+  \item 仮定：\verb|\begin{asm}\text{～}\end{asm}|
+  \item 命題：\verb|\begin{pro}\text{～}\end{pro}|
+  \item 定理：\verb|\begin{thm}\text{～}\end{thm}|
+  \item 補題：\verb|\begin{lem}\text{～}\end{lem}|
+\end{itemize}
+\begin{lstlisting}[language={[latex]TeX}]
+  \begin{dfn}[凸集合]
+    集合 $\ClS \subset \mathbb{R}^n$ が凸集合であるとは，
+    任意の $x, y \in \ClS$ と任意の $\lambda \in [0, 1]$ に対して，
+    $\lambda x + (1 - \lambda) y \in \ClS$ が成り立つことをいう．
+  \end{dfn}
+  \begin{thm}[角谷の不動点定理]
+    \label{thm:Kakutani}
+    \$S$ を，ユークリッド空間 $\mathbb{R}^n$ の空でない
+    コンパクト凸部分集合とする．
+    $\varphi: S \rightarrow 2^S$ を $S$ 上の集合値関数で，
+    閉グラフと次の性質を備えるものとする：
+    $\varphi(x)$ は $x \in S$ に対して空でない凸集合である．
+    このとき，$\varphi$ は不動点を持つ．
+  \end{thm}
+\end{lstlisting}
 \begin{dfn}[凸集合]
   集合 $\ClS \subset \mathbb{R}^n$ が凸集合であるとは，任意の $x, y \in \ClS$ と任意の $\lambda \in [0, 1]$ に対して，$\lambda x + (1 - \lambda) y \in \ClS$ が成り立つことをいう．
 \end{dfn}
@@ -270,6 +322,25 @@ Google Scholarで一つずつ文献を引用するのは面倒である．
   \end{algorithmic}
 \end{algorithm}
 
+
+\newpage
+\section{数式，図表，命題等の引用}
+\verb|\label{ラベル名}|を用いて，数式，図表，命題等にラベルを付ける．
+\verb|\cref{ラベル名}|を用いて，数式，図表，命題等を参照する．
+\begin{lstlisting}[language={[latex]TeX}]
+  \begin{align}
+    &y = a x^{2} + bx + c
+    \label{eq:sample_equation}
+  \end{align}
+  \cref{eq:sample_equation}は，二次関数である．
+\end{lstlisting}
+\begin{align}
+  &y = a x^{2} + bx + c
+  \label{eq:sample_equation}
+\end{align}
+\cref{eq:sample_equation}は，二次関数である．
+
+\newpage
 \section{付録の挿入}
 2種類の方法がある．
 \subsection{各chapterごとに付録を挿入する場合}
